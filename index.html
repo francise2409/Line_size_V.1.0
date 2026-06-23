@@ -83,6 +83,7 @@ async function unlock() {
     await new Promise(r => setTimeout(r, 50));
 
     const html = new TextDecoder().decode(decrypted);
+    sessionStorage.setItem('lsz_pw', pw);
     document.open(); document.write(html); document.close();
   } catch(e) {
     document.getElementById('err').textContent = 'Mật khẩu không đúng hoặc tệp bị lỗi.';
@@ -97,6 +98,14 @@ function setBar(pct, label) {
   document.getElementById('bar').style.width = pct + '%';
   document.getElementById('bar-label').textContent = label;
 }
+
+(async () => {
+  const saved = sessionStorage.getItem('lsz_pw');
+  if (saved) {
+    document.getElementById('pw').value = saved;
+    await unlock();
+  }
+})();
 </script>
 </body>
 </html>
